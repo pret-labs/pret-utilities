@@ -27,6 +27,7 @@ export interface RawUserSummaryResponse {
   currentLoanToValue: BigNumber;
   currentLiquidationThreshold: BigNumber;
   healthFactor: BigNumber;
+  isInIsolationMode: boolean;
 }
 
 export function generateRawUserSummary({
@@ -41,9 +42,11 @@ export function generateRawUserSummary({
     totalCollateralMarketReferenceCurrency,
     currentLtv,
     currentLiquidationThreshold,
+    isInIsolationMode,
+    isolatedReserve,
   } = calculateUserReserveTotals({ userReserves, userEmodeCategoryId });
 
-  const availableBorrowsMarketReferenceCurrency =
+  const _availableBorrowsMarketReferenceCurrency =
     calculateAvailableBorrowsMarketReferenceCurrency({
       collateralBalanceMarketReferenceCurrency:
         totalCollateralMarketReferenceCurrency,
@@ -51,7 +54,19 @@ export function generateRawUserSummary({
       currentLtv,
     });
 
+  const availableBorrowsMarketReferenceCurrency =
+    isInIsolationMode && isolatedReserve
+      ? BigNumber.min(
+          new BigNumber(isolatedReserve.debtCeiling).minus(
+            isolatedReserve.isolationModeTotalDebt,
+          ),
+          isolatedReserve.debtCeilingDecimals,
+          _availableBorrowsMarketReferenceCurrency,
+        )
+      : _availableBorrowsMarketReferenceCurrency;
+
   return {
+    isInIsolationMode,
     totalLiquidityUSD: normalizedToUsd(
       totalLiquidityMarketReferenceCurrency,
       marketReferencePriceInUsd,

@@ -129,13 +129,13 @@ export function formatUserSummary({
     userEmodeCategoryId,
   });
 
-  const isolatedUserReserve = formattedUserReserves.find(
-    reserve =>
-      reserve.reserve.debtCeiling !== '0' &&
-      reserve.usageAsCollateralEnabledOnUser,
-  );
-
-  const isInIsolationMode = Boolean(isolatedUserReserve);
+  const isolatedUserReserve = userData.isInIsolationMode
+    ? formattedUserReserves.find(
+        reserve =>
+          reserve.reserve.debtCeiling !== '0' &&
+          reserve.usageAsCollateralEnabledOnUser,
+      )
+    : undefined;
 
   return {
     userReservesData: formattedUserReserves,
@@ -165,7 +165,7 @@ export function formatUserSummary({
       LTV_PRECISION,
     ),
     healthFactor: userData.healthFactor.toFixed(),
-    isInIsolationMode,
+    isInIsolationMode: userData.isInIsolationMode,
     isolatedReserve: isolatedUserReserve,
   };
 }
