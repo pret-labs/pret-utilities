@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { BigNumberValue } from '../../bignumber';
+import { BigNumberValue, normalizeBN } from '../../bignumber';
 import {
   calculateAvailableBorrowsMarketReferenceCurrency,
   calculateHealthFactorFromBalances,
@@ -57,10 +57,12 @@ export function generateRawUserSummary({
   const availableBorrowsMarketReferenceCurrency =
     isInIsolationMode && isolatedReserve
       ? BigNumber.min(
-          new BigNumber(isolatedReserve.debtCeiling).minus(
-            isolatedReserve.isolationModeTotalDebt,
+          normalizeBN(
+            new BigNumber(isolatedReserve.debtCeiling).minus(
+              isolatedReserve.isolationModeTotalDebt,
+            ),
+            isolatedReserve.debtCeilingDecimals,
           ),
-          isolatedReserve.debtCeilingDecimals,
           _availableBorrowsMarketReferenceCurrency,
         )
       : _availableBorrowsMarketReferenceCurrency;
