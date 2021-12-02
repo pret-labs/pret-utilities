@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
-import { RawReserveData } from 'math-utils/src';
 import { valueToBigNumber, valueToZDBigNumber } from '../../bignumber';
 import { UserReserveSummaryResponse } from './generate-user-reserve-summary';
+import { RawReserveData } from './';
 
 interface UserReserveTotalsRequest {
   userReserves: UserReserveSummaryResponse[];

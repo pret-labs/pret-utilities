@@ -7,6 +7,7 @@ import {
 import { normalizedToUsd } from '../usd/normalized-to-usd';
 import { calculateUserReserveTotals } from './calculate-user-reserve-totals';
 import { UserReserveSummaryResponse } from './generate-user-reserve-summary';
+import { RawReserveData } from './';
 
 export interface RawUserSummaryRequest {
   userReserves: UserReserveSummaryResponse[];
@@ -28,6 +29,7 @@ export interface RawUserSummaryResponse {
   currentLiquidationThreshold: BigNumber;
   healthFactor: BigNumber;
   isInIsolationMode: boolean;
+  isolatedReserve?: RawReserveData;
 }
 
 export function generateRawUserSummary({
@@ -69,6 +71,7 @@ export function generateRawUserSummary({
 
   return {
     isInIsolationMode,
+    isolatedReserve,
     totalLiquidityUSD: normalizedToUsd(
       totalLiquidityMarketReferenceCurrency,
       marketReferencePriceInUsd,

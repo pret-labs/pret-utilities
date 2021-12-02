@@ -91,7 +91,7 @@ export interface FormatUserSummaryResponse {
   currentLiquidationThreshold: string;
   healthFactor: string;
   isInIsolationMode: boolean;
-  isolatedReserve?: ComputedUserReserve;
+  isolatedReserve?: RawReserveData;
 }
 
 export function formatUserSummary({
@@ -129,14 +129,6 @@ export function formatUserSummary({
     userEmodeCategoryId,
   });
 
-  const isolatedUserReserve = userData.isInIsolationMode
-    ? formattedUserReserves.find(
-        reserve =>
-          reserve.reserve.debtCeiling !== '0' &&
-          reserve.usageAsCollateralEnabledOnUser,
-      )
-    : undefined;
-
   return {
     userReservesData: formattedUserReserves,
     totalLiquidityMarketReferenceCurrency: normalize(
@@ -166,6 +158,6 @@ export function formatUserSummary({
     ),
     healthFactor: userData.healthFactor.toFixed(),
     isInIsolationMode: userData.isInIsolationMode,
-    isolatedReserve: isolatedUserReserve,
+    isolatedReserve: userData.isolatedReserve,
   };
 }
