@@ -63,7 +63,8 @@ export function generateRawUserSummary({
             new BigNumber(isolatedReserve.debtCeiling).minus(
               isolatedReserve.isolationModeTotalDebt,
             ),
-            isolatedReserve.debtCeilingDecimals - marketRefCurrencyDecimals,
+            isolatedReserve.debtCeilingDecimals -
+              marketReferenceCurrencyDecimals,
           ),
           _availableBorrowsMarketReferenceCurrency,
         )
