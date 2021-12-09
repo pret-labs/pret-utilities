@@ -1,5 +1,5 @@
 {
-  "name": "@aave/contract-helpers",
+  "name": "@pret/contract-helpers",
   "version": "0.27.0",
   "license": "MIT",
   "description": "",
@@ -26,13 +26,13 @@
   "types": "./dist/esm/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/@aave/aave-utilities.git"
+    "url": "git+https://github.com/@pret/pret-utilities.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://github.com/@aave/aave-utilities/issues"
+    "url": "https://github.com/@pret/pret-utilities/issues"
   },
-  "homepage": "https://github.com/@aave/aave-utilities#readme",
+  "homepage": "https://github.com/@pret/pret-utilities#readme",
   "gitHead": "47a9a6d1f940185ab1e7f6c2bea61564b2abe47a",
   "publishConfig": {
     "access": "public"
