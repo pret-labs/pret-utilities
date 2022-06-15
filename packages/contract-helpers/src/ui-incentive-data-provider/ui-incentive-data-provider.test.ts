@@ -18,6 +18,7 @@ jest.mock('../cl-feed-registry/index', () => {
 describe('UiIncentiveDataProvider', () => {
   const mockValidEthereumAddress = '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984';
   const mockInvalidEthereumAddress = '0x0';
+  const mockIncentivesControllerAddress = '0x0';
 
   const createValidInstance = () => {
     const instance = new UiIncentiveDataProvider({
@@ -73,6 +74,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getFullReservesIncentiveData(
           mockInvalidEthereumAddress,
           mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).rejects.toThrow('User address is not a valid ethereum address');
     });
@@ -83,6 +85,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getFullReservesIncentiveData(
           mockValidEthereumAddress,
           mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
@@ -93,6 +96,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getFullReservesIncentiveData(
           mockValidEthereumAddress,
           mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).resolves.not.toThrow();
     });
@@ -102,13 +106,19 @@ describe('UiIncentiveDataProvider', () => {
     it('should throw if lending pool address is not a valid ethereum address', async () => {
       const instance = createValidInstance();
       await expect(
-        instance.getReservesIncentivesData(mockInvalidEthereumAddress),
+        instance.getReservesIncentivesData(
+          mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
     it('should not throw', async () => {
       const instance = createValidInstance();
       await expect(
-        instance.getReservesIncentivesData(mockValidEthereumAddress),
+        instance.getReservesIncentivesData(
+          mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
       ).resolves.not.toThrow();
     });
   });
@@ -117,7 +127,10 @@ describe('UiIncentiveDataProvider', () => {
     it('Should throw error if token address is wrong', async () => {
       const instance = createValidInstance();
       await expect(
-        instance.getReservesIncentivesDataHumanized(mockInvalidEthereumAddress),
+        instance.getReservesIncentivesDataHumanized(
+          mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
   });
@@ -129,6 +142,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getUserReservesIncentivesDataHumanized(
           mockInvalidEthereumAddress,
           mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
@@ -137,6 +151,7 @@ describe('UiIncentiveDataProvider', () => {
       const response = await instance.getUserReservesIncentivesDataHumanized(
         mockValidEthereumAddress,
         mockValidEthereumAddress,
+        mockIncentivesControllerAddress,
       );
 
       expect(response).toEqual([
@@ -178,7 +193,10 @@ describe('UiIncentiveDataProvider', () => {
     it('Should throw error if token address is wrong', async () => {
       const instance = createValidInstance();
       await expect(
-        instance.getReservesIncentivesDataHumanized(mockInvalidEthereumAddress),
+        instance.getReservesIncentivesDataHumanized(
+          mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
     it('should work with one feed', async () => {
@@ -202,6 +220,7 @@ describe('UiIncentiveDataProvider', () => {
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.eth,
         });
 
@@ -327,6 +346,7 @@ describe('UiIncentiveDataProvider', () => {
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.eth,
         });
 
@@ -452,6 +472,7 @@ describe('UiIncentiveDataProvider', () => {
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
         });
 
       expect(clInstance.getPriceFeed).toBeCalled();
@@ -570,6 +591,7 @@ describe('UiIncentiveDataProvider', () => {
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.eth,
         });
 
@@ -689,12 +711,14 @@ describe('UiIncentiveDataProvider', () => {
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.eth,
         });
       const result2: ReserveIncentiveWithFeedsResponse[] =
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.eth,
         });
 
@@ -905,6 +929,7 @@ describe('UiIncentiveDataProvider', () => {
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
           chainlinkFeedsRegistry: mockInvalidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.usd,
         });
 
@@ -1012,6 +1037,7 @@ describe('UiIncentiveDataProvider', () => {
       const result: ReserveIncentiveWithFeedsResponse[] =
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
         });
 
       expect(result).toEqual([
@@ -1118,6 +1144,7 @@ describe('UiIncentiveDataProvider', () => {
       const result: ReserveIncentiveWithFeedsResponse[] =
         await instance.getIncentivesDataWithPrice({
           lendingPoolAddressProvider: mockValidEthereumAddress,
+          incentivesController: mockIncentivesControllerAddress,
           quote: Denominations.usd,
         });
 
@@ -1229,6 +1256,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getUserReservesIncentivesData(
           mockValidEthereumAddress,
           mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
@@ -1238,6 +1266,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getUserReservesIncentivesData(
           mockInvalidEthereumAddress,
           mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).rejects.toThrow('User address is not a valid ethereum address');
     });
@@ -1248,6 +1277,7 @@ describe('UiIncentiveDataProvider', () => {
         instance.getUserReservesIncentivesData(
           mockValidEthereumAddress,
           mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
         ),
       ).resolves.not.toThrow();
     });

@@ -30,17 +30,21 @@ export interface UiIncentiveDataProviderInterface {
   ) => Promise<FullReservesIncentiveDataResponse>;
   getReservesIncentivesData: (
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ) => Promise<ReserveIncentiveDataResponse[]>;
   getUserReservesIncentivesData: (
     user: string,
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ) => Promise<UserReserveIncentiveDataResponse[]>;
   getReservesIncentivesDataHumanized: (
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ) => Promise<ReserveIncentiveDataHumanizedResponse[]>;
   getUserReservesIncentivesDataHumanized: (
     user: string,
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ) => Promise<UserReserveIncentiveDataHumanizedResponse[]>;
   getIncentivesDataWithPrice: (
     args: GetIncentivesDataWithPriceType,
@@ -60,6 +64,7 @@ export interface FeedResultSuccessful {
 
 export interface GetIncentivesDataWithPriceType {
   lendingPoolAddressProvider: string;
+  incentivesController: string;
   chainlinkFeedsRegistry?: string;
   quote?: Denominations;
 }
@@ -102,6 +107,7 @@ export class UiIncentiveDataProvider
   public async getFullReservesIncentiveData(
     user: string,
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ): Promise<FullReservesIncentiveDataResponse> {
     if (!isAddress(lendingPoolAddressProvider)) {
       throw new Error('Lending pool address provider is not valid');
@@ -114,6 +120,7 @@ export class UiIncentiveDataProvider
     return this._contract.getFullReservesIncentiveData(
       lendingPoolAddressProvider,
       user,
+      incentivesController,
     );
   }
 
@@ -122,19 +129,25 @@ export class UiIncentiveDataProvider
    */
   public async getReservesIncentivesData(
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ): Promise<ReserveIncentiveDataResponse[]> {
     if (!isAddress(lendingPoolAddressProvider)) {
       throw new Error('Lending pool address provider is not valid');
     }
 
-    return this._contract.getReservesIncentivesData(lendingPoolAddressProvider);
+    return this._contract.getReservesIncentivesData(
+      lendingPoolAddressProvider,
+      incentivesController,
+    );
   }
 
   public async getReservesIncentivesDataHumanized(
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ): Promise<ReserveIncentiveDataHumanizedResponse[]> {
     const response = await this.getReservesIncentivesData(
       lendingPoolAddressProvider,
+      incentivesController,
     );
 
     return response.map(r => ({
@@ -148,10 +161,12 @@ export class UiIncentiveDataProvider
   public async getUserReservesIncentivesDataHumanized(
     user: string,
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ): Promise<UserReserveIncentiveDataHumanizedResponse[]> {
     const response = await this.getUserReservesIncentivesData(
       user,
       lendingPoolAddressProvider,
+      incentivesController,
     );
 
     return response.map(r => ({
@@ -175,6 +190,7 @@ export class UiIncentiveDataProvider
   public async getUserReservesIncentivesData(
     user: string,
     lendingPoolAddressProvider: string,
+    incentivesController: string,
   ): Promise<UserReserveIncentiveDataResponse[]> {
     if (!isAddress(lendingPoolAddressProvider)) {
       throw new Error('Lending pool address provider is not valid');
@@ -187,18 +203,23 @@ export class UiIncentiveDataProvider
     return this._contract.getUserReservesIncentivesData(
       lendingPoolAddressProvider,
       user,
+      incentivesController,
     );
   }
 
   public async getIncentivesDataWithPrice({
     lendingPoolAddressProvider,
     chainlinkFeedsRegistry,
+    incentivesController,
     quote = Denominations.eth,
   }: GetIncentivesDataWithPriceType): Promise<
     ReserveIncentiveWithFeedsResponse[]
   > {
     const incentives: ReserveIncentiveDataHumanizedResponse[] =
-      await this.getReservesIncentivesDataHumanized(lendingPoolAddressProvider);
+      await this.getReservesIncentivesDataHumanized(
+        lendingPoolAddressProvider,
+        incentivesController,
+      );
     const feeds: FeedResultSuccessful[] = [];
 
     if (chainlinkFeedsRegistry && isAddress(chainlinkFeedsRegistry)) {
