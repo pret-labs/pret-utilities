@@ -60,6 +60,45 @@ const _abi = [
         type: 'address',
       },
     ],
+    name: 'getProgressiveIncentivesData',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'contract ILendingPoolAddressesProvider',
+        name: 'provider',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        internalType: 'contract IAaveIncentivesController',
+        name: 'incentivesController',
+        type: 'address',
+      },
+    ],
     name: 'getFullReservesIncentiveData',
     outputs: [
       {
