@@ -1,4 +1,4 @@
-import { providers } from 'ethers';
+import { BigNumber, providers } from 'ethers';
 import { isAddress } from 'ethers/lib/utils';
 import {
   ChainlinkFeedsRegistry,
@@ -104,7 +104,11 @@ export class UiIncentiveDataProvider
     user: string,
     lendingPoolAddressProvider: string,
     incentivesController: string,
-  ): Promise<string[]> {
+  ): Promise<{
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+  }> {
     if (!isAddress(lendingPoolAddressProvider)) {
       throw new Error('Lending pool address provider is not valid');
     }
