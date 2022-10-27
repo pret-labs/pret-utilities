@@ -100,6 +100,26 @@ export class UiIncentiveDataProvider
     );
   }
 
+  public async getProgressiveIncentivesData(
+    user: string,
+    lendingPoolAddressProvider: string,
+    incentivesController: string,
+  ): Promise<string[]> {
+    if (!isAddress(lendingPoolAddressProvider)) {
+      throw new Error('Lending pool address provider is not valid');
+    }
+
+    if (!isAddress(user)) {
+      throw new Error('User address is not a valid ethereum address');
+    }
+
+    return this._contract.getProgressiveIncentivesData(
+      lendingPoolAddressProvider,
+      user,
+      incentivesController,
+    );
+  }
+
   /**
    *  Get the full reserve incentive data for the lending pool and the user
    * @param user The user address
