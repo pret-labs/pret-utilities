@@ -83,6 +83,14 @@ export class UiIncentiveDataProvider extends Contract {
       incentivesControler: string,
       overrides?: CallOverrides,
     ): Promise<string[]>;
+
+    'getProgressiveIncentivesData(address, address, address)'(
+      provider: string,
+      user: string,
+      incentivesControler: string,
+      overrides?: CallOverrides,
+    ): Promise<string[]>;
+
     getFullReservesIncentiveData(
       provider: string,
       user: string,
@@ -978,13 +986,6 @@ export class UiIncentiveDataProvider extends Contract {
     }>;
   };
 
-  getProgressiveIncentivesData(
-    provider: string,
-    user: string,
-    incentivesControler: string,
-    overrides?: CallOverrides,
-  ): Promise<string[]>;
-
   getFullReservesIncentiveData(
     provider: string,
     user: string,
@@ -1555,13 +1556,6 @@ export class UiIncentiveDataProvider extends Contract {
       };
     }[]
   >;
-
-  'getProgressiveIncentivesData(address, address, address)'(
-    provider: string,
-    user: string,
-    incentivesControler: string,
-    overrides?: CallOverrides,
-  ): Promise<string[]>;
 
   'getReservesIncentivesData(address,address)'(
     provider: string,
