@@ -124,7 +124,18 @@ describe('UiIncentiveDataProvider', () => {
     });
   });
 
-  describe('getProgressiveIncentivesData - to get 100% in coverage :( pointless test', () => {
+  describe('getProgressiveIncentivesData', () => {
+    it('should throw if user is not a valid ethereum address', async () => {
+      const instance = createValidInstance();
+      await expect(
+        instance.getProgressiveIncentivesData(
+          mockInvalidEthereumAddress,
+          mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
+      ).rejects.toThrow('User address is not a valid ethereum address');
+    });
+
     it('should throw if lending pool address is not a valid ethereum address', async () => {
       const instance = createValidInstance();
       await expect(
@@ -135,6 +146,7 @@ describe('UiIncentiveDataProvider', () => {
         ),
       ).rejects.toThrow('Lending pool address provider is not valid');
     });
+
     it('should not throw', async () => {
       const instance = createValidInstance();
       await expect(
