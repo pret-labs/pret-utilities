@@ -140,7 +140,7 @@ describe('UiIncentiveDataProvider', () => {
       const instance = createValidInstance();
       await expect(
         instance.getProgressiveIncentivesData(
-          mockInvalidEthereumAddress,
+          mockValidEthereumAddress,
           mockInvalidEthereumAddress,
           mockIncentivesControllerAddress,
         ),
