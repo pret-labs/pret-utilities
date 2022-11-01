@@ -37,6 +37,7 @@ describe('UiIncentiveDataProvider', () => {
 
     // @ts-expect-error readonly
     instance._contract = {
+      getProgressiveIncentivesData: jest.fn(),
       getFullReservesIncentiveData: jest.fn(),
       getReservesIncentivesData: mockGetReservesIncentivesData,
       getUserReservesIncentivesData: mockGetUserIncentivesData,
@@ -116,6 +117,41 @@ describe('UiIncentiveDataProvider', () => {
       const instance = createValidInstance();
       await expect(
         instance.getReservesIncentivesData(
+          mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
+      ).resolves.not.toThrow();
+    });
+  });
+
+  describe('getProgressiveIncentivesData', () => {
+    it('should throw if user is not a valid ethereum address', async () => {
+      const instance = createValidInstance();
+      await expect(
+        instance.getProgressiveIncentivesData(
+          mockInvalidEthereumAddress,
+          mockValidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
+      ).rejects.toThrow('User address is not a valid ethereum address');
+    });
+
+    it('should throw if lending pool address is not a valid ethereum address', async () => {
+      const instance = createValidInstance();
+      await expect(
+        instance.getProgressiveIncentivesData(
+          mockValidEthereumAddress,
+          mockInvalidEthereumAddress,
+          mockIncentivesControllerAddress,
+        ),
+      ).rejects.toThrow('Lending pool address provider is not valid');
+    });
+
+    it('should not throw', async () => {
+      const instance = createValidInstance();
+      await expect(
+        instance.getProgressiveIncentivesData(
+          mockValidEthereumAddress,
           mockValidEthereumAddress,
           mockIncentivesControllerAddress,
         ),

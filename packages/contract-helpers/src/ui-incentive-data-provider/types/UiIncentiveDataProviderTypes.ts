@@ -110,3 +110,9 @@ export interface FullReservesIncentiveDataResponse {
   0: ReserveIncentiveDataResponse[];
   1: UserReserveIncentiveDataResponse[];
 }
+
+export interface ProgressiveIncentivesDataResponse {
+  0: BigNumber;
+  1: BigNumber;
+  2: BigNumber;
+}

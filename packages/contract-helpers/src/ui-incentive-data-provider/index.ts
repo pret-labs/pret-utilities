@@ -1,4 +1,4 @@
-import { BigNumber, providers } from 'ethers';
+import { providers } from 'ethers';
 import { isAddress } from 'ethers/lib/utils';
 import {
   ChainlinkFeedsRegistry,
@@ -14,6 +14,7 @@ import {
   IncentiveDataHumanized,
   IncentiveUserData,
   IncentiveUserDataHumanized,
+  ProgressiveIncentivesDataResponse,
   ReserveIncentiveDataHumanizedResponse,
   ReserveIncentiveDataResponse,
   ReserveIncentiveWithFeedsResponse,
@@ -23,6 +24,11 @@ import {
 export * from './types/UiIncentiveDataProviderTypes';
 
 export interface UiIncentiveDataProviderInterface {
+  getProgressiveIncentivesData: (
+    user: string,
+    lendingPoolAddressProvider: string,
+    incentivesController: string,
+  ) => Promise<ProgressiveIncentivesDataResponse>;
   getFullReservesIncentiveData: (
     user: string,
     incentiveDataProviderAddress: string,
@@ -100,15 +106,16 @@ export class UiIncentiveDataProvider
     );
   }
 
+  /**
+   *  Get the progressive incentive data for the lending pool and the user
+   * @param user The user address
+   * @param lendingPoolAddressProvider The LendingPoolAddressProvider address
+   */
   public async getProgressiveIncentivesData(
     user: string,
     lendingPoolAddressProvider: string,
     incentivesController: string,
-  ): Promise<{
-    0: BigNumber;
-    1: BigNumber;
-    2: BigNumber;
-  }> {
+  ): Promise<ProgressiveIncentivesDataResponse> {
     if (!isAddress(lendingPoolAddressProvider)) {
       throw new Error('Lending pool address provider is not valid');
     }
