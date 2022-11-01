@@ -1,4 +1,4 @@
-import { providers } from 'ethers';
+import { BigNumber, providers } from 'ethers';
 import { isAddress } from 'ethers/lib/utils';
 import {
   ChainlinkFeedsRegistry,
@@ -97,6 +97,30 @@ export class UiIncentiveDataProvider
     this._contract = UiIncentiveDataProviderFactory.connect(
       context.incentiveDataProviderAddress,
       context.provider,
+    );
+  }
+
+  public async getProgressiveIncentivesData(
+    user: string,
+    lendingPoolAddressProvider: string,
+    incentivesController: string,
+  ): Promise<{
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+  }> {
+    if (!isAddress(lendingPoolAddressProvider)) {
+      throw new Error('Lending pool address provider is not valid');
+    }
+
+    if (!isAddress(user)) {
+      throw new Error('User address is not a valid ethereum address');
+    }
+
+    return this._contract.getProgressiveIncentivesData(
+      lendingPoolAddressProvider,
+      user,
+      incentivesController,
     );
   }
 

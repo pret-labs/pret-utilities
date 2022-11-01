@@ -21,12 +21,17 @@ import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi';
 interface UiIncentiveDataProviderInterface extends ethers.utils.Interface {
   functions: {
     'getFullReservesIncentiveData(address,address,address)': FunctionFragment;
+    'getProgressiveIncentivesData(address,address,address)': FunctionFragment;
     'getReservesIncentivesData(address,address)': FunctionFragment;
     'getUserReservesIncentivesData(address,address,address)': FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: 'getFullReservesIncentiveData',
+    values: [string, string, string],
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'getProgressiveIncentivesData',
     values: [string, string, string],
   ): string;
   encodeFunctionData(
@@ -40,6 +45,10 @@ interface UiIncentiveDataProviderInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(
     functionFragment: 'getFullReservesIncentiveData',
+    data: BytesLike,
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'getProgressiveIncentivesData',
     data: BytesLike,
   ): Result;
   decodeFunctionResult(
@@ -506,6 +515,28 @@ export class UiIncentiveDataProvider extends Contract {
           5: number;
         };
       }[];
+    }>;
+
+    getProgressiveIncentivesData(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<{
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+    }>;
+
+    'getProgressiveIncentivesData(address,address,address)'(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<{
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
     }>;
 
     getReservesIncentivesData(
@@ -1403,6 +1434,28 @@ export class UiIncentiveDataProvider extends Contract {
     }[];
   }>;
 
+  getProgressiveIncentivesData(
+    provider: string,
+    user: string,
+    incentivesController: string,
+    overrides?: CallOverrides,
+  ): Promise<{
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+  }>;
+
+  'getProgressiveIncentivesData(address,address,address)'(
+    provider: string,
+    user: string,
+    incentivesController: string,
+    overrides?: CallOverrides,
+  ): Promise<{
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+  }>;
+
   getReservesIncentivesData(
     provider: string,
     incentivesController: string,
@@ -2298,6 +2351,28 @@ export class UiIncentiveDataProvider extends Contract {
       }[];
     }>;
 
+    getProgressiveIncentivesData(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<{
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+    }>;
+
+    'getProgressiveIncentivesData(address,address,address)'(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<{
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+    }>;
+
     getReservesIncentivesData(
       provider: string,
       incentivesController: string,
@@ -2770,6 +2845,20 @@ export class UiIncentiveDataProvider extends Contract {
       overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
+    getProgressiveIncentivesData(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>;
+
+    'getProgressiveIncentivesData(address,address,address)'(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>;
+
     getReservesIncentivesData(
       provider: string,
       incentivesController: string,
@@ -2806,6 +2895,20 @@ export class UiIncentiveDataProvider extends Contract {
     ): Promise<PopulatedTransaction>;
 
     'getFullReservesIncentiveData(address,address,address)'(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    getProgressiveIncentivesData(
+      provider: string,
+      user: string,
+      incentivesController: string,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>;
+
+    'getProgressiveIncentivesData(address,address,address)'(
       provider: string,
       user: string,
       incentivesController: string,
