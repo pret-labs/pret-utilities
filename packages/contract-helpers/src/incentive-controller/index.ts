@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+/* eslint-disable @typescript-eslint/member-ordering */
 import { constants, providers } from 'ethers';
 import BaseService from '../commons/BaseService';
 import {
@@ -20,8 +22,15 @@ export type ClaimRewardsMethodType = {
   incentivesControllerAddress: string;
 };
 
+export type DISTRIBUTION_ENDMethodType = {
+  user: string;
+  incentivesControllerAddress: string;
+};
 export interface IncentivesControllerInterface {
   claimRewards: (
+    args: ClaimRewardsMethodType,
+  ) => EthereumTransactionTypeExtended[];
+  DISTRIBUTION_END: (
     args: ClaimRewardsMethodType,
   ) => EthereumTransactionTypeExtended[];
 }
@@ -32,6 +41,28 @@ export class IncentivesController
 {
   constructor(provider: providers.Provider) {
     super(provider, IAaveIncentivesController__factory);
+  }
+
+  public DISTRIBUTION_END(
+    @isEthAddress('user')
+    @isEthAddress('incentivesControllerAddress')
+    { user, incentivesControllerAddress }: DISTRIBUTION_ENDMethodType,
+  ) {
+    const incentivesContract: IAaveIncentivesController =
+      this.getContractInstance(incentivesControllerAddress);
+    const txCallback: () => Promise<transactionType> = this.generateTxCallback({
+      rawTxMethod: async () =>
+        incentivesContract.populateTransaction.DISTRIBUTION_END(),
+      from: user,
+    });
+
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.REWARD_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
+      },
+    ];
   }
 
   @IncentivesValidator

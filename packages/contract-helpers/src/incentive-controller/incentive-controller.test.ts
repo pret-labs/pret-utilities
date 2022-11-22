@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import { BigNumber, constants, providers, utils } from 'ethers';
 import {
   eEthereumTxType,
@@ -27,6 +28,34 @@ describe('IncentiveController', () => {
     it('Expects to be initialized correctly', () => {
       const incentivesInstance = new IncentivesController(correctProvider);
       expect(incentivesInstance instanceof IncentivesController);
+    });
+  });
+  describe('getProgressiveIncentivesData', () => {
+    const incentivesInstance = new IncentivesController(correctProvider);
+    const user = '0x0000000000000000000000000000000000000001';
+    const incentivesControllerAddress =
+      '0x0000000000000000000000000000000000000002';
+    it('No expect', async () => {
+      const distributionEndTxObject = incentivesInstance.DISTRIBUTION_END({
+        user,
+        incentivesControllerAddress,
+      });
+      expect(distributionEndTxObject.length).toEqual(1);
+      expect(distributionEndTxObject[0].txType).toEqual(
+        eEthereumTxType.REWARD_ACTION,
+      );
+
+      const txObj: transactionType = await distributionEndTxObject[0].tx();
+      expect(txObj.to).toEqual(incentivesControllerAddress);
+      expect(txObj.from).toEqual(user);
+      expect(txObj.gasLimit).toEqual(BigNumber.from(1));
+      expect(txObj.value).toEqual(DEFAULT_NULL_VALUE_ON_TX);
+
+      // gas price
+      const gasPrice = await distributionEndTxObject[0].gas();
+      expect(gasPrice).not.toBeNull();
+      expect(gasPrice?.gasLimit).toEqual('1');
+      expect(gasPrice?.gasPrice).toEqual('1');
     });
   });
   describe('claimRewards', () => {
