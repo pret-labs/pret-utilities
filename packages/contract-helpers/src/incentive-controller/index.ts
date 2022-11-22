@@ -31,7 +31,7 @@ export interface IncentivesControllerInterface {
     args: ClaimRewardsMethodType,
   ) => EthereumTransactionTypeExtended[];
   DISTRIBUTION_END: (
-    args: ClaimRewardsMethodType,
+    args: DISTRIBUTION_ENDMethodType,
   ) => EthereumTransactionTypeExtended[];
 }
 
