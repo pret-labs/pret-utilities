@@ -1,4 +1,6 @@
-import { constants, providers } from 'ethers';
+/* eslint-disable new-cap */
+/* eslint-disable @typescript-eslint/member-ordering */
+import { BigNumber, constants, providers } from 'ethers';
 import BaseService from '../commons/BaseService';
 import {
   eEthereumTxType,
@@ -20,10 +22,14 @@ export type ClaimRewardsMethodType = {
   incentivesControllerAddress: string;
 };
 
+export type DISTRIBUTION_ENDMethodType = {
+  incentivesControllerAddress: string;
+};
 export interface IncentivesControllerInterface {
   claimRewards: (
     args: ClaimRewardsMethodType,
   ) => EthereumTransactionTypeExtended[];
+  DISTRIBUTION_END: (args: DISTRIBUTION_ENDMethodType) => Promise<BigNumber>;
 }
 
 export class IncentivesController
@@ -32,6 +38,15 @@ export class IncentivesController
 {
   constructor(provider: providers.Provider) {
     super(provider, IAaveIncentivesController__factory);
+  }
+
+  public async DISTRIBUTION_END(
+    @isEthAddress('incentivesControllerAddress')
+    { incentivesControllerAddress }: DISTRIBUTION_ENDMethodType,
+  ) {
+    const incentivesContract: IAaveIncentivesController =
+      this.getContractInstance(incentivesControllerAddress);
+    return incentivesContract.DISTRIBUTION_END();
   }
 
   @IncentivesValidator

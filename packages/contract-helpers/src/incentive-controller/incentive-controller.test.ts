@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import { BigNumber, constants, providers, utils } from 'ethers';
 import {
   eEthereumTxType,
@@ -27,6 +28,22 @@ describe('IncentiveController', () => {
     it('Expects to be initialized correctly', () => {
       const incentivesInstance = new IncentivesController(correctProvider);
       expect(incentivesInstance instanceof IncentivesController);
+    });
+  });
+  describe('DISTRIBUTION_END', () => {
+    const incentivesInstance = new IncentivesController(correctProvider);
+    const incentivesControllerAddress =
+      '0x0000000000000000000000000000000000000001';
+    it('Expect the DISTRIBUTION_END invoke success', async () => {
+      const getContractInstance = jest.fn();
+      getContractInstance.mockReturnValue({
+        DISTRIBUTION_END: jest.fn().mockImplementation(_ => BigNumber.from(0)),
+      });
+      incentivesInstance.getContractInstance = getContractInstance;
+      const distributionEnd = await incentivesInstance.DISTRIBUTION_END({
+        incentivesControllerAddress,
+      });
+      expect(distributionEnd instanceof BigNumber);
     });
   });
   describe('claimRewards', () => {
