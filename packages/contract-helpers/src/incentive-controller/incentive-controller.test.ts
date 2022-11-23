@@ -30,11 +30,11 @@ describe('IncentiveController', () => {
       expect(incentivesInstance instanceof IncentivesController);
     });
   });
-  describe('getProgressiveIncentivesData', () => {
+  describe('DISTRIBUTION_END', () => {
     const incentivesInstance = new IncentivesController(correctProvider);
     const incentivesControllerAddress =
       '0x0000000000000000000000000000000000000001';
-    it('No expect', async () => {
+    it('Expect the DISTRIBUTION_END invoke success', async () => {
       const getContractInstance = jest.fn();
       getContractInstance.mockReturnValue({
         DISTRIBUTION_END: jest.fn().mockImplementation(_ => BigNumber.from(0)),
