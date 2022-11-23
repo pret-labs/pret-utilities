@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 /* eslint-disable @typescript-eslint/member-ordering */
-import { constants, providers } from 'ethers';
+import { BigNumber, constants, providers } from 'ethers';
 import BaseService from '../commons/BaseService';
 import {
   eEthereumTxType,
@@ -23,16 +23,13 @@ export type ClaimRewardsMethodType = {
 };
 
 export type DISTRIBUTION_ENDMethodType = {
-  user: string;
   incentivesControllerAddress: string;
 };
 export interface IncentivesControllerInterface {
   claimRewards: (
     args: ClaimRewardsMethodType,
   ) => EthereumTransactionTypeExtended[];
-  DISTRIBUTION_END: (
-    args: DISTRIBUTION_ENDMethodType,
-  ) => EthereumTransactionTypeExtended[];
+  DISTRIBUTION_END: (args: DISTRIBUTION_ENDMethodType) => Promise<BigNumber>;
 }
 
 export class IncentivesController
@@ -43,26 +40,13 @@ export class IncentivesController
     super(provider, IAaveIncentivesController__factory);
   }
 
-  public DISTRIBUTION_END(
-    @isEthAddress('user')
+  public async DISTRIBUTION_END(
     @isEthAddress('incentivesControllerAddress')
-    { user, incentivesControllerAddress }: DISTRIBUTION_ENDMethodType,
+    { incentivesControllerAddress }: DISTRIBUTION_ENDMethodType,
   ) {
     const incentivesContract: IAaveIncentivesController =
       this.getContractInstance(incentivesControllerAddress);
-    const txCallback: () => Promise<transactionType> = this.generateTxCallback({
-      rawTxMethod: async () =>
-        incentivesContract.populateTransaction.DISTRIBUTION_END(),
-      from: user,
-    });
-
-    return [
-      {
-        tx: txCallback,
-        txType: eEthereumTxType.REWARD_ACTION,
-        gas: this.generateTxPriceEstimation([], txCallback),
-      },
-    ];
+    return incentivesContract.DISTRIBUTION_END();
   }
 
   @IncentivesValidator
