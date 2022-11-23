@@ -38,7 +38,7 @@ describe('IncentiveController', () => {
       const distributionEnd = await incentivesInstance.DISTRIBUTION_END({
         incentivesControllerAddress,
       });
-      expect(distributionEnd).toEqual(0);
+      expect(distributionEnd instanceof BigNumber);
     });
   });
   describe('claimRewards', () => {
