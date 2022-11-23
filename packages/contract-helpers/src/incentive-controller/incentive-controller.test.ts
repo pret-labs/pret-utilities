@@ -35,6 +35,11 @@ describe('IncentiveController', () => {
     const incentivesControllerAddress =
       '0x0000000000000000000000000000000000000001';
     it('No expect', async () => {
+      const getContractInstance = jest.fn();
+      getContractInstance.mockReturnValue({
+        DISTRIBUTION_END: jest.fn().mockImplementation(_ => BigNumber.from(0)),
+      });
+      incentivesInstance.getContractInstance = getContractInstance;
       const distributionEnd = await incentivesInstance.DISTRIBUTION_END({
         incentivesControllerAddress,
       });
